@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BlazorEcommerce.Shared
 {
-	public class ProductVariant
+	public class ProductVariant 
 	{
 		[JsonIgnore]
 		public Product Product { get; set; }
