@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BlazorEcommerce.Shared;
+using BlazorEcommerceProject.Server.Migrations;
+using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BlazorEcommerceProject.Server.Data
 {
@@ -14,137 +18,40 @@ namespace BlazorEcommerceProject.Server.Data
 			modelBuilder.Entity<ProductVariant>()
 				.HasKey(p => new { p.ProductId, p.ProductTypeId });
 
-			modelBuilder.Entity<ProductVariant>().HasData(
-				new ProductVariant
-				{
-					ProductId = 1,
-					ProductTypeId = 2,
-					Price = 9.99m,
-					OriginalPrice = 19.99m
-				},
-				new ProductVariant
-				{
-					ProductId = 1,
-					ProductTypeId = 3,
-					Price = 7.99m
-				},
-				new ProductVariant
-				{
-					ProductId = 1,
-					ProductTypeId = 4,
-					Price = 19.99m,
-					OriginalPrice = 29.99m
-				},
-				new ProductVariant
-				{
-					ProductId = 2,
-					ProductTypeId = 2,
-					Price = 7.99m,
-					OriginalPrice = 14.99m
-				},
-				new ProductVariant
-				{
-					ProductId = 3,
-					ProductTypeId = 2,
-					Price = 6.99m
-				},
-				new ProductVariant
-				{
-					ProductId = 4,
-					ProductTypeId = 5,
-					Price = 3.99m
-				},
-				new ProductVariant
-				{
-					ProductId = 4,
-					ProductTypeId = 6,
-					Price = 9.99m
-				},
-				new ProductVariant
-				{
-					ProductId = 4,
-					ProductTypeId = 7,
-					Price = 19.99m
-				},
-				new ProductVariant
-				{
-					ProductId = 5,
-					ProductTypeId = 5,
-					Price = 3.99m,
-				},
-				new ProductVariant
-				{
-					ProductId = 6,
-					ProductTypeId = 5,
-					Price = 2.99m
-				},
-				new ProductVariant
-				{
-					ProductId = 7,
-					ProductTypeId = 8,
-					Price = 19.99m,
-					OriginalPrice = 29.99m
-				},
-				new ProductVariant
-				{
-					ProductId = 7,
-					ProductTypeId = 9,
-					Price = 69.99m
-				},
-				new ProductVariant
-				{
-					ProductId = 7,
-					ProductTypeId = 10,
-					Price = 49.99m,
-					OriginalPrice = 59.99m
-				},
-				new ProductVariant
-				{
-					ProductId = 8,
-					ProductTypeId = 8,
-					Price = 9.99m,
-					OriginalPrice = 24.99m,
-				},
-				new ProductVariant
-				{
-					ProductId = 9,
-					ProductTypeId = 8,
-					Price = 14.99m
-				},
-				new ProductVariant
-				{
-					ProductId = 10,
-					ProductTypeId = 1,
-					Price = 159.99m,
-					OriginalPrice = 299m
-				},
-				new ProductVariant
-				{
-					ProductId = 11,
-					ProductTypeId = 1,
-					Price = 79.99m,
-					OriginalPrice = 399m
-				});
+			modelBuilder.Entity<ProductType>().HasData(
+					new ProductType { Id = 1, Name = "Default" },
+					new ProductType { Id = 2, Name = "Paperback" },
+					new ProductType { Id = 3, Name = "E-Book" },
+					new ProductType { Id = 4, Name = "Audiobook" },
+					new ProductType { Id = 5, Name = "Stream" },
+					new ProductType { Id = 6, Name = "Blu-ray" },
+					new ProductType { Id = 7, Name = "VHS" },
+					new ProductType { Id = 8, Name = "PC" },
+					new ProductType { Id = 9, Name = "PlayStation" },
+					new ProductType { Id = 10, Name = "Xbox" }
+				);
 
+			
 			modelBuilder.Entity<Category>().HasData(
-				new Category
-				{
-					Id = 1,
-					Name = "Movies",
-					Url = "movies"
-				},
-				new Category
-				{
-					Id = 2,
-					Name = "Books",
-					Url = "books"
-				},
-				new Category
-				{
-					Id = 3,
-					Name = "Video Games",
-					Url = "video-games"
-				});
+					new Category
+					{
+						Id = 1,
+						Name = "Movies",
+						Url = "movies"
+					},
+					new Category
+					{
+						Id = 2,
+						Name = "Books",
+						Url = "books"
+					},
+					new Category
+					{
+						Id = 3,
+						Name = "Video Games",
+						Url = "video-games"
+					}
+				);
 
 			modelBuilder.Entity<Product>().HasData(
 					new Product
@@ -171,14 +78,14 @@ namespace BlazorEcommerceProject.Server.Data
 						ImageUrl = "https://upload.wikimedia.org/wikipedia/en/9/9b/Blade_Runner_2049_poster.png",
 						CategoryId = 1
 					},
-					 new Product
-					 {
-						 Id = 4,
-						 CategoryId = 2,
-						 Title = "The Matrix",
-						 Description = "The Matrix is a 1999 science fiction action film written and directed by the Wachowskis, and produced by Joel Silver. Starring Keanu Reeves, Laurence Fishburne, Carrie-Anne Moss, Hugo Weaving, and Joe Pantoliano, and as the first installment in the Matrix franchise, it depicts a dystopian future in which humanity is unknowingly trapped inside a simulated reality, the Matrix, which intelligent machines have created to distract humans while using their bodies as an energy source. When computer programmer Thomas Anderson, under the hacker alias \"Neo\", uncovers the truth, he \"is drawn into a rebellion against the machines\" along with other people who have been freed from the Matrix.",
-						 ImageUrl = "https://upload.wikimedia.org/wikipedia/en/c/c1/The_Matrix_Poster.jpg",
-					 },
+					new Product
+					{
+						Id = 4,
+						CategoryId = 2,
+						Title = "The Matrix",
+						Description = "The Matrix is a 1999 science fiction action film written and directed by the Wachowskis, and produced by Joel Silver. Starring Keanu Reeves, Laurence Fishburne, Carrie-Anne Moss, Hugo Weaving, and Joe Pantoliano, and as the first installment in the Matrix franchise, it depicts a dystopian future in which humanity is unknowingly trapped inside a simulated reality, the Matrix, which intelligent machines have created to distract humans while using their bodies as an energy source. When computer programmer Thomas Anderson, under the hacker alias \"Neo\", uncovers the truth, he \"is drawn into a rebellion against the machines\" along with other people who have been freed from the Matrix.",
+						ImageUrl = "https://upload.wikimedia.org/wikipedia/en/c/c1/The_Matrix_Poster.jpg",
+					},
 					new Product
 					{
 						Id = 5,
@@ -237,25 +144,124 @@ namespace BlazorEcommerceProject.Server.Data
 						Description = "The Super Nintendo Entertainment System (SNES), also known as the Super NES or Super Nintendo, is a 16-bit home video game console developed by Nintendo that was released in 1990 in Japan and South Korea.",
 						ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/e/ee/Nintendo-Super-Famicom-Set-FL.jpg",
 					}
-					);
-
-			modelBuilder.Entity<ProductType>().HasData(
-					new ProductType { Id = 1, Name = "Default" },
-					new ProductType { Id = 2, Name = "Paperback" },
-					new ProductType { Id = 3, Name = "E-Book" },
-					new ProductType { Id = 4, Name = "Audiobook" },
-					new ProductType { Id = 5, Name = "Stream" },
-					new ProductType { Id = 6, Name = "Blu-ray" },
-					new ProductType { Id = 7, Name = "VHS" },
-					new ProductType { Id = 8, Name = "PC" },
-					new ProductType { Id = 9, Name = "PlayStation" },
-					new ProductType { Id = 10, Name = "Xbox" }
+				);
+			modelBuilder.Entity<ProductVariant>().HasData(
+					new ProductVariant
+					{
+						ProductId = 1,
+						ProductTypeId = 2,
+						Price = 9.99m,
+						OriginalPrice = 19.99m
+					},
+					new ProductVariant
+					{
+						ProductId = 1,
+						ProductTypeId = 3,
+						Price = 7.99m
+					},
+					new ProductVariant
+					{
+						ProductId = 1,
+						ProductTypeId = 4,
+						Price = 19.99m,
+						OriginalPrice = 29.99m
+					},
+					new ProductVariant
+					{
+						ProductId = 2,
+						ProductTypeId = 2,
+						Price = 7.99m,
+						OriginalPrice = 14.99m
+					},
+					new ProductVariant
+					{
+						ProductId = 3,
+						ProductTypeId = 2,
+						Price = 6.99m
+					},
+					new ProductVariant
+					{
+						ProductId = 4,
+						ProductTypeId = 5,
+						Price = 3.99m
+					},
+					new ProductVariant
+					{
+						ProductId = 4,
+						ProductTypeId = 6,
+						Price = 9.99m
+					},
+					new ProductVariant
+					{
+						ProductId = 4,
+						ProductTypeId = 7,
+						Price = 19.99m
+					},
+					new ProductVariant
+					{
+						ProductId = 5,
+						ProductTypeId = 5,
+						Price = 3.99m,
+					},
+					new ProductVariant
+					{
+						ProductId = 6,
+						ProductTypeId = 5,
+						Price = 2.99m
+					},
+					new ProductVariant
+					{
+						ProductId = 7,
+						ProductTypeId = 8,
+						Price = 19.99m,
+						OriginalPrice = 29.99m
+					},
+					new ProductVariant
+					{
+						ProductId = 7,
+						ProductTypeId = 9,
+						Price = 69.99m
+					},
+					new ProductVariant
+					{
+						ProductId = 7,
+						ProductTypeId = 10,
+						Price = 49.99m,
+						OriginalPrice = 59.99m
+					},
+					new ProductVariant
+					{
+						ProductId = 8,
+						ProductTypeId = 8,
+						Price = 9.99m,
+						OriginalPrice = 24.99m,
+					},
+					new ProductVariant
+					{
+						ProductId = 9,
+						ProductTypeId = 8,
+						Price = 14.99m
+					},
+					new ProductVariant
+					{
+						ProductId = 10,
+						ProductTypeId = 1,
+						Price = 159.99m,
+						OriginalPrice = 299m
+					},
+					new ProductVariant
+					{
+						ProductId = 11,
+						ProductTypeId = 1,
+						Price = 79.99m,
+						OriginalPrice = 399m
+					}
 				);
 		}
+
 		public DbSet<Product> Products { get; set; }
 		public DbSet<Category> Categories { get; set; }
-		public DbSet<ProductType> ProductType { get; set; }
+		public DbSet<ProductType> ProductTypes { get; set; }
 		public DbSet<ProductVariant> ProductVariants { get; set; }
-
 	}
 }
