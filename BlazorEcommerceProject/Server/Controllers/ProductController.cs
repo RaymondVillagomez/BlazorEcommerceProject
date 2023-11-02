@@ -9,9 +9,9 @@ namespace BlazorEcommerceProject.Server.Controllers
 	{
 		private readonly IProductService _productService;
 
-		public ProductController(IProductService productService) 
+		public ProductController(IProductService productService)
 		{
-			_productService  = productService;
+			_productService = productService;
 		}
 
 
@@ -28,5 +28,13 @@ namespace BlazorEcommerceProject.Server.Controllers
 			var result = await _productService.GetProductAsync(productId);
 			return Ok(result);
 		}
-	}
+
+		[HttpGet("category/{categoryUrl}")]
+
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProductsByCategory(string categoryUrl)
+        {
+            var result = await _productService.GetProductsByCategory(categoryUrl);
+            return Ok(result);
+        }
+    }
 }
