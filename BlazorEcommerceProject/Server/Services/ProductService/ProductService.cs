@@ -49,14 +49,29 @@ namespace BlazorEcommerceProject.Server.Services.ProductService
 			return response;
 		}
 
-		public async Task<ServiceResponse<List<Product>>> SearchProducts(string searchText)
+		public async Task<ServiceResponse<ProductSearchResultDTO>> SearchProducts(string searchText, int page)
 		{
-			var response = new ServiceResponse<List<Product>>
-			{
-				Data = await _context.Products
+
+
+			var pageResult = 2f;
+			var pageCount = Math.Ceiling((await FindProductsBySearchText(searchText)).Count / pageResult);
+			var products = await _context.Products
 							.Where(p => p.Title.ToLower().Contains(searchText.ToLower())
 							||
-							p.Description.ToLower().Contains(searchText.ToLower())).ToListAsync()
+							p.Description.ToLower().Contains(searchText.ToLower()))
+							.Skip((page - 1) * (int)pageResult)
+							.Take((int)pageResult)
+							.ToListAsync();
+
+
+			var response = new ServiceResponse<ProductSearchResultDTO>
+			{
+				Data = new ProductSearchResultDTO
+				{
+					Products = products,
+					Pages = page,
+					CurrentPage = (int)pageCount
+				}
 			};
 
 			return response;
