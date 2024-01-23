@@ -28,7 +28,9 @@
 				{
 					ProductId = product.Id,
 					Title = product.Title,
-					ImageUrl = product.ImageUrl
+					ImageUrl = product.ImageUrl,
+					Price = product.Price,
+					Quantity = cartItem.Quantity,
 				};
 				result.Data.Add(cartProduct);
 			}

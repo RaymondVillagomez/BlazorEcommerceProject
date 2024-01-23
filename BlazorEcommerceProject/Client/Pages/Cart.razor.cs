@@ -28,15 +28,39 @@ namespace BlazorEcommerceProject.Client.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            if((await CartService.GetCartItems()).Count == 0)
+            await LoadCart();
+        }
+
+        private async Task RemoveProductFromCart(int productId)
+        {
+            await CartService.RemoveProductFromCart(productId);
+            await LoadCart();
+        }
+
+        private async Task LoadCart()
+        {
+			if((await CartService.GetCartItems()).Count == 0)
+
+			{
+				message = "Your cart is empty. ";
+				cartProducts = new List<CartProductResponseDTO>();
+			}
+
+			else
+			{
+				cartProducts = await CartService.GetCartProducts();
+			}
+		}
+
+        private async Task UpdateQuantity(ChangeEventArgs e, CartProductResponseDTO product)
+        {
+            product.Quantity = int.Parse(e.Value.ToString());
+            if(product.Quantity < 1)
             {
-                message = "Your cart is empty. ";
-                cartProducts = new List<CartProductResponseDTO>();
+                product.Quantity = 1;
             }
-            else
-            {
-                cartProducts = await CartService.GetCartProducts();
-            }
+
+            await CartService.UpdateQuantity(product);
         }
     }
 }

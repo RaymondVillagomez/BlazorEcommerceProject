@@ -1,4 +1,5 @@
-﻿using Blazored.LocalStorage;
+﻿using BlazorEcommerceProject.Shared;
+using Blazored.LocalStorage;
 
 namespace BlazorEcommerceProject.Client.Services.CartService
 {
@@ -22,7 +23,15 @@ namespace BlazorEcommerceProject.Client.Services.CartService
 			{
 				cart = new List<CartItem>();
 			}
-			cart.Add(cartItem);
+			var sameItem = cart.Find(x => x.ProductId == cartItem.ProductId);
+			if(sameItem == null)
+			{
+				cart.Add(cartItem);
+			}
+			else
+			{
+				sameItem.Quantity += cartItem.Quantity;
+			}
 
 			await _localStorage.SetItemAsync("cart", cart);
 			OnChange.Invoke();
@@ -45,6 +54,39 @@ namespace BlazorEcommerceProject.Client.Services.CartService
 			var response = await _http.PostAsJsonAsync("api/cart/products", cartItems);
 			var cartProducts = await response.Content.ReadFromJsonAsync<ServiceResponse<List<CartProductResponseDTO>>>();
 			return cartProducts.Data;
+		}
+
+		public async Task RemoveProductFromCart(int productId)
+		{
+			var cart = await _localStorage.GetItemAsync<List<CartItem>>("cart");
+			if(cart == null)
+			{
+				return;
+			}
+
+			var cartItem = cart.Find(x => x.ProductId == productId);
+			if(cartItem != null)
+			{
+				cart.Remove(cartItem);
+				await _localStorage.SetItemAsync("cart", cart);
+				OnChange.Invoke();
+			}
+		}
+
+		public async Task UpdateQuantity(CartProductResponseDTO product)
+		{
+			var cart = await _localStorage.GetItemAsync<List<CartItem>>("cart");
+			if (cart == null)
+			{
+				return;
+			}
+
+			var cartItem = cart.Find(x => x.ProductId == product.ProductId);
+			if (cartItem != null)
+			{
+				cartItem.Quantity = product.Quantity;
+				await _localStorage.SetItemAsync("cart", cart);
+			}
 		}
 	}
 }
