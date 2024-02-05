@@ -5,6 +5,7 @@ global using BlazorEcommerceProject.Server.Services.ProductService;
 global using BlazorEcommerceProject.Server.Services.CategoryService;
 global using BlazorEcommerceProject.Server.Services.CartService;
 using Microsoft.AspNetCore.ResponseCompression;
+using BlazorEcommerceProject.Server.Services.AuthService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
