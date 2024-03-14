@@ -1,12 +1,13 @@
 global using BlazorEcommerceProject.Shared;
 global using System.Net.Http.Json;
 global using BlazorEcommerceProject.Client.Services.ProductService;
+global using BlazorEcommerceProject.Client.Services.CategoryService;
+global using BlazorEcommerceProject.Client.Services.AuthService;
 using BlazorEcommerceProject.Client;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using BlazorEcommerceProject.Client.Services.CategoryService;
 using Blazored.LocalStorage;
-using BlazorEcommerceProject.Client.Services.CartService;
+using BlazorEcommerceProject.Client.Services.CartService;;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -17,4 +18,5 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 await builder.Build().RunAsync();
